@@ -12,16 +12,16 @@ const protect = (req, res, next) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = decoded.id;
-      next();
+      // ✅ FIX: attach as object
+      req.user = { id: decoded.id };
+
+      return next();
     } catch (error) {
       return res.status(401).json({ message: "Not authorized, token failed" });
     }
   }
 
-  if (!token) {
-    return res.status(401).json({ message: "Not authorized, no token" });
-  }
+  return res.status(401).json({ message: "Not authorized, no token" });
 };
 
 module.exports = { protect };

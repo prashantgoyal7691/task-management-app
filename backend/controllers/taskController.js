@@ -5,7 +5,7 @@ const Task = require("../models/Task");
 // @access  Private
 const createTask = async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description, dueDate } = req.body;
 
     if (!title) {
       return res.status(400).json({ message: "Title is required" });
@@ -14,7 +14,8 @@ const createTask = async (req, res) => {
     const task = await Task.create({
       title,
       description,
-      user: req.user,
+      dueDate,
+      user: req.user.id,
     });
 
     res.status(201).json(task);
@@ -29,9 +30,9 @@ const createTask = async (req, res) => {
 const getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({
-      user: req.user,
+      user: req.user.id,
       abandoned: false,
-      completedAt: { $exists: false },
+      completedAt: null,
     }).sort({ createdAt: -1 });
 
     res.status(200).json(tasks);
@@ -51,7 +52,7 @@ const deleteTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    if (task.user.toString() !== req.user) {
+    if (task.user.toString() !== req.user.id) {
       return res.status(401).json({ message: "Not authorized" });
     }
 
@@ -72,7 +73,7 @@ const completeTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    if (task.user.toString() !== req.user) {
+    if (task.user.toString() !== req.user.id) {
       return res.status(401).json({ message: "Not authorized" });
     }
 
@@ -98,15 +99,22 @@ const updateTaskStatus = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    if (task.user.toString() !== req.user) {
+    if (task.user.toString() !== req.user.id) {
       return res.status(401).json({ message: "Not authorized" });
     }
 
-    if (task.status === "Todo") {
-      task.status = "In Progress";
-    } else if (task.status === "In Progress") {
-      task.status = "Done";
-      task.abandoned = false; // 🔥 CRITICAL RULE
+    if (req.body.dueDate !== undefined) {
+      task.dueDate = req.body.dueDate || null;
+    }
+
+    if (req.body.action === "next") {
+      if (task.status === "Todo") {
+        task.status = "In Progress";
+      } else if (task.status === "In Progress") {
+        task.status = "Done";
+        task.abandoned = false;
+        task.completedAt = new Date();
+      }
     }
 
     await task.save();
@@ -119,9 +127,9 @@ const updateTaskStatus = async (req, res) => {
 const getTaskHistory = async (req, res) => {
   try {
     const tasks = await Task.find({
-      user: req.user,
+      user: req.user.id,
       $or: [{ status: "Done" }, { abandoned: true }],
-    }).sort({ updatedAt: -1 });
+    }).sort({ completedAt: -1 });
 
     res.status(200).json(tasks);
   } catch (error) {

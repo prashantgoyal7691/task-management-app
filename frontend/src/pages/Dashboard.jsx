@@ -11,19 +11,18 @@ function Dashboard() {
   const [error, setError] = useState("");
 
   const token = localStorage.getItem("token");
-  let firstName = "";
+
 
   if (token) {
     const user = jwtDecode(token);
     console.log("Decoded user:", user);
-    firstName = user?.name?.trim()?.split(" ")[0] || "";
   }
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const res = await API.get("/tasks");
-        setTasks(res.data);
+        setTasks(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         setError("Failed to load tasks");
       }
@@ -49,13 +48,12 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100 pt-10">
-      <div className="px-6 py-1 text-lg font-semibold">Hello, {firstName}</div>
 
       <Navbar />
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
       {/* 🔹 ADD TASK BUTTON */}
-      <div className="p-6">
+      <div className="pt-20 px-6">
         <button
           onClick={() => setShowModal(true)}
           className="mb-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"

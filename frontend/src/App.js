@@ -1,16 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import History from "./pages/History";
+import Home from "./pages/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <BrowserRouter>
+      <Navbar />
+
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route
           path="/dashboard"
           element={
@@ -19,6 +19,28 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/history"
+          element={
+            <ProtectedRoute>
+              <History />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/history"
           element={

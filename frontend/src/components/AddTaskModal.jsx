@@ -5,6 +5,7 @@ function AddTaskModal({ onClose, onTaskAdded }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
+  const [dueDate, setDueDate] = useState("");
 
   const handleAdd = async () => {
     if (!title) {
@@ -13,7 +14,13 @@ function AddTaskModal({ onClose, onTaskAdded }) {
     }
 
     try {
-      const res = await API.post("/tasks", { title, description });
+      const payload = { title, description };
+
+      if (dueDate) {
+        payload.dueDate = dueDate;
+      }
+
+      const res = await API.post("/tasks", payload);
       onTaskAdded(res.data);
       onClose();
     } catch (err) {
@@ -46,6 +53,13 @@ function AddTaskModal({ onClose, onTaskAdded }) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className="w-full p-2 border rounded mb-4"
+        />
+
+        <input
+          type="date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+          className="w-full border p-2 rounded"
         />
 
         <button
