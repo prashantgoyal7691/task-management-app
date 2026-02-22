@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "task-management-app-vn6a.onrender.com/api",
+  baseURL: "task-management-app-kappa-lilac.vercel.app",
 });
 
 // Automatically attach token to every request
