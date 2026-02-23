@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import TaskColumn from "../components/TaskColumn";
 import AddTaskModal from "../components/AddTaskModal";
 import API from "../services/api";
@@ -49,7 +48,6 @@ function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-100 pt-10">
 
-      <Navbar />
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
       {/* 🔹 ADD TASK BUTTON */}

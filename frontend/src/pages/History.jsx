@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
-import Navbar from "../components/Navbar";
+
 
 function History() {
   const navigate = useNavigate();
@@ -34,7 +34,6 @@ function History() {
 
   return (
     <div className="min-h-screen bg-gray-100 pt-16">
-      <Navbar />
 
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-4">
