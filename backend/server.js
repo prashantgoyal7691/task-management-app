@@ -7,7 +7,16 @@ const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://task-management-app-fae5c.web.app",
+      "https://task-management-app-fae5c.firebaseapp.com",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.get("/", (req, res) => {
