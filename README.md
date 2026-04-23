@@ -53,12 +53,6 @@ Backend
 	•	JWT (JSON Web Tokens)
 
   SCREENSHOTS
-  <<-------login page---->>
-<img width="2880" height="1622" alt="image" src="https://github.com/user-attachments/assets/5d04dba6-b1fa-4230-95d8-b7891f14a169" />
-
-
-<<--------register USER page -------->>
-<img width="2872" height="1612" alt="image" src="https://github.com/user-attachments/assets/b79d2102-1f16-4327-9a8a-fe67516f6f1d" />
 
 <<--------DASHBOARD------->>
 <img width="2874" height="1210" alt="image" src="https://github.com/user-attachments/assets/e9b9a74e-a9f7-49f3-b20f-f5cf257ed1da" />
